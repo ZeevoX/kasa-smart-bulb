@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# while :
-# do
-#   color="$(printf %02x%02x%02x $((RANDOM%256) $((RANDOM%256)) $((RANDOM%256)))"
-#   echo "changing color to $color"
-#   tplight hex -t 1000 192.168.42.6 $color
-#   sleep 1
-# done
-
 lamp_ip="$(tplight scan -t 1 | grep lamp | tr -s ' ' | cut -d ' ' -f 1)"
 
 if [ -z $lamp_ip ]; then 
