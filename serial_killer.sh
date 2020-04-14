@@ -1,25 +1,24 @@
 #!/bin/bash
 
-lamp_ip="$(tplight scan -t 1 | grep lamp | tr -s ' ' | cut -d ' ' -f 1)"
+lamp_ip="$(tplight scan -t 1 | grep LB | tr -s ' ' | cut -d ' ' -f 1)"
 
 if [ -z $lamp_ip ]; then
   echo "No lamp found."
   exit 1
 else
-  echo "Lamp found and ip is: $lamp_ip"
+  echo "Lamp found and IP is: $lamp_ip"
 fi
 
+hue=0
+saturation=100
+brightness=100
 
-tplight $lamp_ip $hue $saturation $brightness
+echo "Working my magic..."
 
-while :
-do
-  hue=0
-  saturation=100
-  brightness=100
-  echo "changing color to $hue"
-  sleep .1
-  tplight on $lamp_ip
-  sleep .1
-  tplight off $lamp_ip
+# run only four times, any more and the lamp stops responding altogether
+for i in {1..4}; do
+  sleep 1
+  tplight hsb -q -t 100 $lamp_ip $hue $saturation $brightness
+  sleep 1
+  tplight off -q -t 100 $lamp_ip
 done
